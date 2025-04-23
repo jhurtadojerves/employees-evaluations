@@ -1,0 +1,21 @@
+components:
+  schemas:
+    PaginatedResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+          example: 100
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+        count:
+          type: integer
+          example: 9
+        data:
+          type: array
+          items:
+            type: object
