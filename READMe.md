@@ -36,6 +36,12 @@ npm install
 npm run start:dev
 ```
 
+## Create user with admin privilege
+
+```bash
+npm run create:admin -- user@example.com supersecurepassword
+```
+
 ## 📚 API Documentation
 
 Swagger UI is available at:
@@ -47,8 +53,6 @@ http://localhost:9000/api/docs.json
 
 You can explore all available endpoints, request and response structures, and try out the API directly from the browser.
 
-## Create user with admin privilege
+## 📚 Postman
 
-```bash
-npm run create:admin -- user@example.com supersecurepassword
-```
+You can log in with your user in Postman, and the token gets automatically included in every request that needs it.
