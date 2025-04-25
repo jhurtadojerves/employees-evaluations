@@ -2,10 +2,10 @@ import express, { Application } from 'express';
 
 import AuthController from '#controllers/auth.controller';
 import AuthRouter from '#routes/auth.route';
-import { EmployeService } from '#services/employee.service';
 import Employee from '#models/Employee';
 import EmployeeController from '#controllers/employee.controller';
 import EmployeeRouter from '#routes/employee.route';
+import { EmployeeService } from '#services/employee.service';
 import Evaluation from '#models/Evaluation';
 import EvaluationController from '#controllers/evaluation.controller';
 import EvaluationRouter from '#routes/evaluation.route';
@@ -33,7 +33,7 @@ const evaluationRepository = Evaluation;
 
 // Services
 const userService = new UserService(userRepository, jwt, jwtDuration);
-const employeeService = new EmployeService(employeeRepository, userRepository);
+const employeeService = new EmployeeService(employeeRepository, userRepository);
 const questionService = new QuestionService(questionRepository);
 const evaluationService = new EvaluationService(evaluationRepository);
 

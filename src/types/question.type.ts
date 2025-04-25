@@ -1,5 +1,9 @@
 import { RefinementCtx, ZodIssueCode, z } from 'zod';
 
+import { extendZodWithOpenApi } from 'zod-openapi';
+
+extendZodWithOpenApi(z);
+
 export const validateChoicesOptions = (
   data: { type?: QuestionType; options?: string[] },
   ctx: RefinementCtx,

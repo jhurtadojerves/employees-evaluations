@@ -1,9 +1,16 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["jest", "node"],
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "baseUrl": ".",
+    "paths": {
+      "#models/*": ["src/models/*"],
+      "#controllers/*": ["src/controllers/*"],
+      "#services/*": ["src/services/*"],
+      "#utils/*": ["src/utils/*"],
+      "#types/*": ["src/types/*"],
+      "#middlewares/*": ["src/middlewares/*"],
+      "#config/*": ["src/config/*"]
+    }
   },
-  "include": ["**/*.spec.ts"]
+  "include": ["tests/**/*.ts"]
 }

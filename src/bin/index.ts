@@ -7,17 +7,13 @@ import connectDB from '#config/database';
 import cors from 'cors';
 import { errorHandler } from '#middlewares/errorHandler';
 import express from 'express';
-import mongoSanitize from 'express-mongo-sanitize';
 import openApi from '#config/swagger';
 import registerRoutes from '#routes/index.route';
 import swaggerUi from 'swagger-ui-express';
-import xss from 'xss-clean';
 
 export async function bootstrap(): Promise<void> {
   expressApp.disable('x-powered-by');
 
-  expressApp.use(mongoSanitize());
-  expressApp.use(xss());
   expressApp.use('/api', apiLimiter);
 
   expressApp.use(express.json());

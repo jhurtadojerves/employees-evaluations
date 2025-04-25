@@ -1,10 +1,10 @@
 import { CreateEmployeeInputSchema, UpdateEmployeeInputSchema } from '#types/employee.type';
 
 import { BaseController } from '#controllers/index.controller';
-import { EmployeService } from '#services/employee.service';
+import { EmployeeService } from '#services/employee.service';
 
 export default class EmployeeController extends BaseController {
-  constructor(protected service: EmployeService) {
+  constructor(protected service: EmployeeService) {
     super(service);
   }
   protected UpdateInputSchema = UpdateEmployeeInputSchema;

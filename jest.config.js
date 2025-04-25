@@ -1,12 +1,16 @@
 const { pathsToModuleNameMapper } = require('ts-jest');
-const { compilerOptions } = require('./tsconfig');
+const { compilerOptions } = require('./tsconfig.spec');
 
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' }),
-  testResultsProcessor: 'jest-sonar-reporter',
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
   transformIgnorePatterns: ['node_modules/(?!(lowercase-keys))'],
   modulePaths: ['<rootDir>'],
-  testMatch: ['<rootDir>/test/**/**/*.spec.ts'],
+  testMatch: ['<rootDir>/tests/**/*.ts'],
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.spec.json',
+    },
+  },
 };

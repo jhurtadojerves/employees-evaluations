@@ -9,7 +9,7 @@ import { HttpNotFound } from '#utils/HttpError';
 import User from '#models/User';
 import { cleanObject } from '#utils/cleanObject';
 
-export class EmployeService implements BaseService<UpdateEmployeeInput, EmployeeDTO> {
+export class EmployeeService implements BaseService<UpdateEmployeeInput, EmployeeDTO> {
   private userSelect = 'email role createdAt updatedAt';
   constructor(
     private readonly repository: typeof Employee,
