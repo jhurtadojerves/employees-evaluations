@@ -11,7 +11,8 @@
     "format": "prettier ./src --write .",
     "start": "node build/src/bin/www.js",
     "clean": "rm -rf build && rm -rf coverage",
-    "purge": "rm -rf node_modules"
+    "purge": "rm -rf node_modules",
+    "create:admin": "ts-node src/scripts/createAdmin.ts"
   },
   "keywords": [],
   "author": "juliens",
@@ -19,14 +20,18 @@
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-cls-hooked": "^0.3.8",
     "express-list-endpoints": "^7.1.1",
     "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "zod": "^3.24.3",
+    "zod-openapi": "^4.2.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

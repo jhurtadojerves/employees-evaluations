@@ -1,9 +1,9 @@
+import AuthController from '#controllers/auth.controller';
 import { BaseRouter } from '#routes/index.route';
 import { Router } from 'express';
-import UserController from '#controllers/auth.controller';
 
 export default class AuthRouter extends BaseRouter {
-  constructor(private controller: UserController) {
+  constructor(private controller: AuthController) {
     super();
   }
   public path: string = '/auth';

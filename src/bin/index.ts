@@ -1,23 +1,41 @@
-import { authRouter, employeeRouter, expressApp, port } from '#inject';
+import { expressApp, port, routes } from '#inject';
+import { getBaseContextMiddleware, requestContextMiddleware } from '#middlewares/contextMiddleware';
 
 import config from '#config';
 import connectDB from '#config/database';
 import cors from 'cors';
 import { errorHandler } from '#middlewares/errorHandler';
 import express from 'express';
+import openApi from '#config/swagger';
 import registerRoutes from '#routes/index.route';
-import swaggerSpec from '#config/swagger';
 import swaggerUi from 'swagger-ui-express';
 
 export async function bootstrap(): Promise<void> {
   expressApp.disable('x-powered-by');
   expressApp.use(cors());
   expressApp.use(express.json());
-  registerRoutes(expressApp, [authRouter, employeeRouter], '/api');
+  expressApp.use(getBaseContextMiddleware);
+  expressApp.use(requestContextMiddleware);
+  registerRoutes(expressApp, routes, '/api');
 
-  expressApp.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   await connectDB(config.db.url);
   expressApp.use(errorHandler);
+
+  if (config.server.env == 'local') {
+    expressApp.use(
+      '/api/docs',
+      swaggerUi.serve,
+      swaggerUi.setup(openApi, {
+        swaggerOptions: {
+          persistAuthorization: true,
+        },
+      }),
+    );
+    expressApp.get('/api/docs.json', (_req, res) => {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(openApi);
+    });
+  }
 
   expressApp.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);

@@ -1,22 +1,35 @@
-import { loadDocs } from '#docs/load';
-import path from 'path';
-import swaggerJSDoc from 'swagger-jsdoc';
+import { EmployeeDTOSchema } from '#dtos/employee.dto';
+import { EvaluationDTOSchema } from '#dtos/evaluation.dto';
+import { QuestionDTOSchema } from '#dtos/question.dto';
+import { UserDTOSchema } from '#dtos/user.dto';
+import { authDocs } from '#docs/auth.docs';
+import { createDocument } from 'zod-openapi';
+import { employeeDocs } from '#docs/employee.docs';
+import { evaluationDocs } from '#docs/evaluation.docs';
+import { questionDocs } from '#docs/question.docs';
+import { userDocs } from '#docs/user.docs';
 
-const docs = loadDocs(path.resolve(__dirname, '../docs'));
-
-const swaggerDefinition = {
-  openapi: '3.0.0',
+const openApi = createDocument({
+  openapi: '3.1.0',
   info: {
-    title: '360 Evaluation REST API',
     version: '1.0.0',
-    description: 'Auto-generated Swagger documentation',
+    title: 'Evaluations routers',
+    description: 'Evaluations routers documentation',
   },
-  servers: [
-    {
-      url: 'http://localhost:9000/api',
-    },
-  ],
+  paths: {
+    ...authDocs,
+    ...employeeDocs,
+    ...evaluationDocs,
+    ...questionDocs,
+    ...userDocs,
+  },
   components: {
+    schemas: {
+      Employee: EmployeeDTOSchema,
+      Evaluation: EvaluationDTOSchema,
+      Question: QuestionDTOSchema,
+      User: UserDTOSchema,
+    },
     securitySchemes: {
       BearerAuth: {
         type: 'http',
@@ -24,20 +37,14 @@ const swaggerDefinition = {
         bearerFormat: 'JWT',
       },
     },
-    schemas: {
-      ...docs.components?.schemas,
+  },
+  security: [{ BearerAuth: [] }],
+  servers: [
+    {
+      url: 'http://localhost:9000/api/',
+      description: 'Local server',
     },
-  },
-  paths: {
-    ...docs.paths,
-  },
-};
+  ],
+});
 
-const options = {
-  swaggerDefinition,
-  apis: [],
-};
-
-const swaggerSpec = swaggerJSDoc(options);
-
-export default swaggerSpec;
+export default openApi;

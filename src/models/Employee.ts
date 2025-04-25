@@ -3,7 +3,8 @@ import mongoose, { Document, Schema, Types } from 'mongoose';
 import { IUser } from './User';
 
 export interface IEmployee extends Document {
-  name: string;
+  firstName: string;
+  lastName: string;
   position: string;
   salary: number;
   user: Types.ObjectId | IUser;
@@ -13,7 +14,8 @@ export interface IEmployee extends Document {
 
 const EmployeeSchema: Schema = new Schema(
   {
-    name: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     position: { type: String, required: true },
     salary: { type: Number, required: true },
     user: { type: Types.ObjectId, ref: 'User', required: true, unique: true },

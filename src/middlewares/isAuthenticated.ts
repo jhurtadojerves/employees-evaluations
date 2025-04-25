@@ -33,6 +33,7 @@ export const isAuthenticated = async (
       email: user.email,
       role: user.role,
     };
+    (req as any).userId = user._id;
 
     next();
   } catch (error) {

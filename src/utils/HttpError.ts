@@ -35,3 +35,10 @@ export class HttpForbidden extends HttpError {
     super(StatusCodes.FORBIDDEN, defaultMessage);
   }
 }
+
+export class HttpNotImplemented extends HttpError {
+  constructor(message?: string) {
+    const defaultMessage = message || 'Not allowed';
+    super(StatusCodes.METHOD_NOT_ALLOWED, defaultMessage);
+  }
+}

@@ -17,16 +17,13 @@ export default class EmployeeRouter extends BaseRouter {
     const managerPermissions = [UserRole.ADMIN.toString(), UserRole.MANAGER.toString()];
 
     routerProvider.get('/', isAuthenticated, authorize(...allPermissions), this.controller.list);
-
     routerProvider.get('/:id', isAuthenticated, authorize(...allPermissions), this.controller.get);
-
     routerProvider.post(
       '/',
       isAuthenticated,
       authorize(...managerPermissions),
       this.controller.create,
     );
-
     routerProvider.patch(
       '/:id',
       isAuthenticated,
