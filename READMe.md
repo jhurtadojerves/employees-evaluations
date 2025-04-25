@@ -2,57 +2,114 @@
 
 Backend service for managing evaluations, questions, users, and employees.
 
-## 🚀 Requirements
+## 🚀 Quick Start
 
-- Node.js **v20.11+** (recommended: use [nvm](https://github.com/nvm-sh/nvm) for version management)
-- Docker & Docker Compose
+1.  **Prerequisites:**
 
-## 🐘 Database (MongoDB)
+    - Node.js **v20.11+** (recommended: use [nvm](https://github.com/nvm-sh/nvm))
+    - Docker & Docker Compose
 
-Make sure Docker is installed and running. To spin up the MongoDB container:
+2.  **Database:**
 
-```bash
-docker compose up -d
+    ```bash
+    docker compose up -d
+    ```
+
+3.  **Environment Variables:**
+    Create a `.env` file with the following (adjust as needed):
+
+    ```
+    PORT=9000
+    JWT_SECRET=your-secret-key
+    JWT_DURATION=1h
+    DB_URL=mongodb://localhost:27017/evaluations
+    ```
+
+4.  **Install Dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+5.  **Run in Development Mode:**
+
+    ```bash
+    npm run start:dev
+    ```
+
+6.  **API Documentation:**
+    - Swagger UI: [http://localhost:9000/api/docs](http://localhost:9000/api/docs)
+    - OpenAPI JSON: [http://localhost:9000/api/docs.json](http://localhost:9000/api/docs.json)
+
+## ⚙️ Other Commands
+
+- **Run Tests:**
+  ```bash
+  npm run test
+  ```
+- **Create Admin User:**
+  ```bash
+  npm run create:admin -- user@example.com supersecurepassword
+  ```
+
+## 📁 Project Structure
+
+```
+├── src/
+│   ├── config/             # Environment config, DB connections, Swagger setup
+│   ├── controllers/        # Route handlers extending BaseController
+│   ├── dtos/               # Output DTOs validated with Zod (also used for docs)
+│   ├── middlewares/        # Global middlewares (error handler, security, context, etc.)
+│   ├── models/             # Mongoose models and schemas
+│   ├── routes/             # Routes declaration and registration
+│   ├── services/           # Business logic and DB access (repositories)
+│   ├── types/              # Zod schemas for request validation (input)
+│   ├── utils/              # Shared utilities (e.g., error classes, request context)
+│   └── inject.ts           # DI setup for app instance and dependencies
+│
+├── tests/                  # Controller unit tests using Jest, outside src
+│   └── controllers/
+│
+├── .env                    # Environment variables
+├── jest.config.js          # Jest config with path aliases and test match
+├── tsconfig.json           # Base TypeScript config
+├── tsconfig.spec.json      # TS config for tests
+└── README.md
 ```
 
-## ⚙️ Environment Variables
+## 📐 Design Decisions
 
-```
-PORT=9000
-JWT_SECRET=your-secret-key
-JWT_DURATION=1h
-DB_URL=mongodb://localhost:27017/evaluations
-```
+**BaseController Pattern:**
 
-## 📦 Install Dependencies
+- All controllers extend `BaseController` to avoid duplicated logic for common operations (list, get, update, create).
+- This promotes DRY (Don't Repeat Yourself) and standardizes controller behavior.
 
-```bash
-npm install
-```
+**Zod for validation & OpenAPI:**
 
-## 🧪 Run in Development Mode
+- All inputs are validated using Zod schemas.
+- The same schemas are extended with `.openapi()` metadata to generate documentation.
+- Output DTOs (`dtos/`) also use Zod, ensuring consistency and type safety across responses.
 
-```bash
-npm run start:dev
-```
+**Typed Request Context:**
 
-## Create user with admin privilege
+- `cls-hooked` or `express-cls-hooked` is used to inject contextual information (e.g., current user) globally.
 
-```bash
-npm run create:admin -- user@example.com supersecurepassword
-```
+**Custom Error Handling:**
 
-## 📚 API Documentation
+- Unified error handling middleware returns standardized JSON responses.
+- Custom errors (e.g., `HttpBadRequest`, `HttpNotFound`) extend a base `HttpError` class with status codes.
 
-Swagger UI is available at:
+**Security Enhancements:**
 
-```bash
-http://localhost:9000/api/docs
-http://localhost:9000/api/docs.json
-```
+- Include `rate-limiter` for API protection.
+- JWT-based authentication with optional request guards for protected routes.
 
-You can explore all available endpoints, request and response structures, and try out the API directly from the browser.
+**Tests Outside `src/`:**
 
-## 📚 Postman
+- Tests are located in `/tests/controllers`, keeping them separate from the production codebase.
+- Uses `ts-jest`, path alias resolution, and mocks to isolate controller logic.
 
-You can log in with your user in Postman, and the token gets automatically included in every request that needs it.
+**Swagger-UI + JSON Mode:**
+
+- OpenAPI docs are available at `/api/docs` with persistent login.
+- `/api/docs.json` exposes the raw spec for importing into tools like Postman.

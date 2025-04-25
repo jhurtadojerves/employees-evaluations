@@ -18,12 +18,27 @@ export default class EvaluationRouter extends BaseRouter {
     );
 
     routerProvider.post('/', isAuthenticated, managerPermissions, this.controller.create);
-    routerProvider.get('/', isAuthenticated, this.controller.list);
-    routerProvider.get('/:id', isAuthenticated, this.controller.get);
-    routerProvider.patch('/:id', isAuthenticated, this.controller.update);
-    routerProvider.patch('/:id/disable', isAuthenticated, this.controller.disable);
-    routerProvider.post('/:id/questions', isAuthenticated, this.controller.addQuestions);
-    routerProvider.delete('/:id/questions', isAuthenticated, this.controller.removeQuestions);
+    routerProvider.get('/', isAuthenticated, managerPermissions, this.controller.list);
+    routerProvider.get('/:id', isAuthenticated, managerPermissions, this.controller.get);
+    routerProvider.patch('/:id', isAuthenticated, managerPermissions, this.controller.update);
+    routerProvider.patch(
+      '/:id/disable',
+      isAuthenticated,
+      managerPermissions,
+      this.controller.disable,
+    );
+    routerProvider.post(
+      '/:id/questions',
+      isAuthenticated,
+      managerPermissions,
+      this.controller.addQuestions,
+    );
+    routerProvider.delete(
+      '/:id/questions',
+      isAuthenticated,
+      managerPermissions,
+      this.controller.removeQuestions,
+    );
 
     return routerProvider;
   };

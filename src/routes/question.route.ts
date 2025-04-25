@@ -18,7 +18,7 @@ export default class QuestionRouter extends BaseRouter {
       ...[UserRole.ADMIN.toString(), UserRole.MANAGER.toString()],
     );
 
-    routerProvider.get('/', isAuthenticated, this.controller.list);
+    routerProvider.get('/', isAuthenticated, managerPermissions, this.controller.list);
     routerProvider.patch('/:id', isAuthenticated, managerPermissions, this.controller.update);
     routerProvider.post('/', isAuthenticated, managerPermissions, (req, res, next) =>
       this.controller.create(req as AuthenticatedRequest, res, next),
